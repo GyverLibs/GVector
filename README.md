@@ -22,10 +22,13 @@
 
 ## Использование
 ### Класс GVector
-#### Конструктор
+#### Конструктор и доступ
 ```cpp
 float x = 0;
 float y = 0;
+
+// доступ как vector[0] vector[1]
+float& operator[](uint8_t i);
 
 constexpr GVector();
 constexpr GVector(float x, float y);
@@ -261,9 +264,21 @@ GVector& setHeadingDeg(int deg);
 
 // интерполировать текущий вектор к v, где t — коэффициент от 0.0 до 1.0.
 GVector& lerp(const GVector& v, float t);
+
+// умножить на матрицу
+GVector& apply(const GMatrix& mx);
+GVector& operator*=(const GMatrix& mx);
 ```
 
 ### Класс GMatrix
+#### Конструктор и доступ
+```cpp
+GMatrix();
+
+// доступ как matrix[0][0]
+float* operator[](uint8_t i);
+```
+
 #### Фабрики
 ```cpp
 // единичная матрица
@@ -284,10 +299,6 @@ static GMatrix scaling(float sxy);
 
 #### Получение
 ```cpp
-// доступ как matrix[0][0]
-inline float* operator[](uint8_t i);
-inline const float* operator[](uint8_t i);
-
 // умножение на другую матрицу
 GMatrix operator*(const GMatrix& other);
 
