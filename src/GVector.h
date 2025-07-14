@@ -1,11 +1,19 @@
 #pragma once
-#include <math.h>
-#include <stdint.h>
+
+#include "GMatrix.h"
 
 class GVector {
    public:
     float x = 0;
     float y = 0;
+
+    // доступ как vector[0] vector[1]
+    float& operator[](uint8_t i) {
+        return i ? y : x;
+    }
+    const float& operator[](uint8_t i) const {
+        return i ? y : x;
+    }
 
     // ================ CONSTR ================
 
@@ -430,5 +438,13 @@ class GVector {
     // интерполировать текущий вектор к v, где t — коэффициент от 0.0 до 1.0.
     GVector& lerp(const GVector& v, float t) {
         return set(x + (v.x - x) * t, y + (v.y - y) * t);
+    }
+
+    // умножить на матрицу
+    GVector& apply(const GMatrix& mx) {
+        return set(mx[0][0] * x + mx[0][1] * y + mx[0][2], mx[1][0] * x + mx[1][1] * y + mx[1][2]);
+    }
+    GVector& operator*=(const GMatrix& mx) {
+        return apply(mx);
     }
 };

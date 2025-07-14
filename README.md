@@ -263,6 +263,79 @@ GVector& setHeadingDeg(int deg);
 GVector& lerp(const GVector& v, float t);
 ```
 
+### Класс GMatrix
+#### Фабрики
+```cpp
+// единичная матрица
+static GMatrix identity();
+
+// матрица поворота
+static GMatrix rotation(float rad);
+
+// матрица сдвига
+static GMatrix translation(float dx, float dy);
+
+// матрица масштабирования
+static GMatrix scaling(float sx, float sy);
+
+// матрица масштабирования
+static GMatrix scaling(float sxy);
+```
+
+#### Получение
+```cpp
+// доступ как matrix[0][0]
+inline float* operator[](uint8_t i);
+inline const float* operator[](uint8_t i);
+
+// умножение на другую матрицу
+GMatrix operator*(const GMatrix& other);
+
+// обратная матрица
+GMatrix inverted();
+
+// транспонированная матрица
+GMatrix transposed();
+```
+
+#### Декомпозиция
+```cpp
+struct Decomposed {
+    float angle;   // угол в радианах
+    float sx, sy;  // масштабы по осям
+    float tx, ty;  // сдвиг по осям
+};
+
+// разложить на составляющие
+Decomposed decompose();
+```
+
+#### Изменение
+```cpp
+// умножить на другую матрицу
+GMatrix& mul(const GMatrix& other);
+GMatrix& operator*=(const GMatrix& other);
+
+// сделать единичной
+GMatrix& reset();
+
+// повернуть
+GMatrix& rotate(float rad);
+
+// переместить
+GMatrix& translate(float dx, float dy);
+
+// масштабировать
+GMatrix& scale(float sx, float sy);
+GMatrix& scale(float sxy);
+
+// транспонировать
+GMatrix& transpose();
+
+// инвертировать
+GMatrix& invert();
+```
+
 ## Примеры
 ### Движение с отскоком
 ```cpp
@@ -290,6 +363,23 @@ GVector A(10, 20);
 GVector B(30, 40);
 GVector AB = B - A;
 float dist = AB.mag();
+```
+
+### Смещение, поворот и масштаб прямоугольника
+```cpp
+// координаты углов
+GVector corners[] = {
+    GVector(0, 0),
+    GVector(10, 0),
+    GVector(10, 5),
+    GVector(0, 5),
+};
+
+// создаём матрицу. Применяется в обратном порядке!
+GMatrix transform = GMatrix::translation(x, y).rotate(PI / 4).scale(5);
+
+// применяем к точкам
+for (int i = 0; i < 4; i++) corners[i].apply(transform);
 ```
 
 <a id="versions"></a>
