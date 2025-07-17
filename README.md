@@ -265,7 +265,14 @@ GVector& setHeadingDeg(int deg);
 // интерполировать текущий вектор к v, где t — коэффициент от 0.0 до 1.0.
 GVector& lerp(const GVector& v, float t);
 
+```
+
+#### Матрица
+```cpp
 // умножить на матрицу
+static GVector mul(const GVector& v, const GMatrix& mx);
+GVector operator*(const GMatrix& mx);
+
 GVector& apply(const GMatrix& mx);
 GVector& operator*=(const GMatrix& mx);
 ```

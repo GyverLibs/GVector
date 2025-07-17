@@ -440,6 +440,15 @@ class GVector {
         return set(x + (v.x - x) * t, y + (v.y - y) * t);
     }
 
+    // ================ MATRIX ================
+
+    static GVector mul(const GVector& v, const GMatrix& mx) {
+        return GVector(mx[0][0] * v.x + mx[0][1] * v.y + mx[0][2], mx[1][0] * v.x + mx[1][1] * v.y + mx[1][2]);
+    }
+    GVector operator*(const GMatrix& mx) {
+        return mul(*this, mx);
+    }
+
     // умножить на матрицу
     GVector& apply(const GMatrix& mx) {
         return set(mx[0][0] * x + mx[0][1] * y + mx[0][2], mx[1][0] * x + mx[1][1] * y + mx[1][2]);
